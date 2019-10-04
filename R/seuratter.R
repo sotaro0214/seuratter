@@ -37,16 +37,15 @@ determine_dimensionality <- function(plot_data) {
 
 }
 
-x <- determine_dimensionality(a$data)
 
 
 
 #' Extracts Genes Expressed By A Cluster.
 #'
-#' A function that utilizes a Seurat function to identify and extract gene expression profiles of a cluster.
-#' Involves identifying all genes expressed by more than a certain percentage of cells (recommend 0.25) in the cluster and does not take into account
-#' the uniquesness of expression among other clusters. In other words, does not focus on cluster specific genes but also
-#' involves genes that are generally expressed.
+#' A function that utilizes a Seurat function to identify and extract gene expression profiles (both positive and negative expressions) of
+#' a cluster. Involves identifying all genes expressed by more than a certain percentage of cells (recommend 0.25) in the cluster and
+#' does not take into account the uniquesness of expression among other clusters. In other words, does not focus on cluster specific genes
+#' but also involves genes that are generally expressed.
 #'
 #'
 #' @param seurat_object A Seurat object that has undergone the entire workflow, involving UMAP.
@@ -58,8 +57,21 @@ x <- determine_dimensionality(a$data)
 #' @export
 extract_genes_expressed <- function(seurat_object, cluster_num, min_percent) {
 
-  cluster_markers <- FindMarkers(seurat_object, ident.1 = cluster_num, min.pct = percent_expressed)
+  cluster_markers <- FindMarkers(seurat_object, ident.1 = cluster_num, min.pct = min_percent)
   return(rownames(cluster_markers))
+
+}
+
+#' Compare And Extract Coexpressed Genes In Two Clusters
+#'
+#' A function that compares and compiles all the genes identified by extract_genes_expressed into one matrix
+#'
+#' @param seurat_object A Seurat object that has undergone the entire workflow, involving UMAP.
+#'
+#' @return Returns a matrix of cluster id by cluster id, with each matrix cell (x,y) containing the vector genes expressed by both clusters x and y.
+#'
+#' @export
+get_same_genes <- function() {
 
 }
 
@@ -75,12 +87,29 @@ extract_genes_expressed <- function(seurat_object, cluster_num, min_percent) {
 #'
 #' @export
 compare_cluster_genes <- function(seurat_object) {
-  clusters <- unique(PBMC$seurat_clusters)
+  clusters <- unique(seurat_object$seurat_clusters)
   num_clusters <- length(clusters)
-  row_col_name <- sort(clusters)
-  gene_comparison_matrix <- matrix(nrow = num_clusters, ncol = num_clusters, dimnames = list(row_col_name, row_col_name))
+  row_col_name <- as.character(sort(clusters))
+  gene_expressions <- matrix(list(), nrow = num_clusters, ncol = 1, dimnames = list(row_col_name, "genes"))
+  gene_comparison_matrix <- matrix(list(), nrow = num_clusters, ncol = num_clusters, dimnames = list(row_col_name, row_col_name))
 
-  for (cluster_id in row_col_name) {
-
+  for (cluster_id in row.names(gene_expressions)) {
+    gene_expressions[cluster_id, "genes"][[1]] <-  extract_genes_expressed(seurat_object, cluster_id, 0.25)
   }
+
+  for (cluster_id_x in row_col_name) {
+    for (cluster_id_y in row_col_name) {
+      if (cluster_id_x == cluster_id_y) {
+        gene_comparison_matrix[cluster_id_x, cluster_id_y][[1]] <- NA
+      }
+      else if (is.null(gene_comparison_matrix[cluster_id_x, cluster_id_y][[1]])) {
+        gene_overlaps <- intersect(gene_expressions[cluster_id_x, "genes"][[1]], gene_expressions[cluster_id_y, "genes"][[1]])
+        gene_comparison_matrix[cluster_id_x, cluster_id_y][[1]] <- gene_overlaps
+      } else {
+        ;
+      }
+    }
+  }
+
+  return(gene_comparison_matrix)
 }
