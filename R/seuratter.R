@@ -101,22 +101,7 @@ compare_cluster_genes <- function(seurat_object) {
   return(gene_comparison_matrix)
 }
 
-convert_matrix_to_dataframe <- function(gene_comparison_matrix) {
-  graph_from_adjacency_matrix(gene_comparison_matrix, mode = "undirected", weighted = TRUE)
-}
-graph_from_adjacency_matrix(gene_comparison_matrix, mode = "undirected", weighted = TRUE)
-another_matrix <- cbind(gene_comparison_matrix)
-for (i in 0:8) {
-  for (j in 0:8) {
-    if (!is.na(another_matrix[as.character(i), as.character(j)][[1]])) {
-      another_matrix[as.character(i), as.character(j)][[1]] <- length(another_matrix[as.character(i), as.character(j)][[1]])
-    } else {
-      another_matrix[as.character(i), as.character(j)][[1]] <- 0
-    }
-  }
-}
 
-plot(graph_from_adjacency_matrix(another_matrix, mode="undirected", weighted = TRUE))
 
 #' Plot A Graph Representing Gene Expression Relationships Between Clusters
 #'
