@@ -62,19 +62,6 @@ extract_genes_expressed <- function(seurat_object, cluster_num, min_percent) {
 
 }
 
-#' Compare And Extract Coexpressed Genes In Two Clusters
-#'
-#' A function that compares and compiles all the genes identified by extract_genes_expressed into one matrix
-#'
-#' @param seurat_object A Seurat object that has undergone the entire workflow, involving UMAP.
-#'
-#' @return Returns a matrix of cluster id by cluster id, with each matrix cell (x,y) containing the vector genes expressed by both clusters x and y.
-#'
-#' @export
-get_same_genes <- function() {
-
-}
-
 
 
 #' Compares Genes Expressed In Each Cluster.
@@ -83,7 +70,7 @@ get_same_genes <- function() {
 #'
 #' @param seurat_object A Seurat object that has undergone the entire workflow, involving UMAP.
 #'
-#' @return Returns a matrix of cluster id by cluster id, with each matrix cell (x,y) containing the vector genes expressed by both clusters x and y.
+#' @return Returns a matrix of number of clusters by number of clusters, with each matrix cell (x,y) containing the vector genes expressed by both clusters x and y.
 #'
 #' @export
 compare_cluster_genes <- function(seurat_object) {
@@ -112,4 +99,56 @@ compare_cluster_genes <- function(seurat_object) {
   }
 
   return(gene_comparison_matrix)
+}
+
+convert_matrix_to_dataframe <- function(gene_comparison_matrix) {
+  graph_from_adjacency_matrix(gene_comparison_matrix, mode = "undirected", weighted = TRUE)
+}
+graph_from_adjacency_matrix(gene_comparison_matrix, mode = "undirected", weighted = TRUE)
+another_matrix <- cbind(gene_comparison_matrix)
+for (i in 0:8) {
+  for (j in 0:8) {
+    if (!is.na(another_matrix[as.character(i), as.character(j)][[1]])) {
+      another_matrix[as.character(i), as.character(j)][[1]] <- length(another_matrix[as.character(i), as.character(j)][[1]])
+    } else {
+      another_matrix[as.character(i), as.character(j)][[1]] <- 0
+    }
+  }
+}
+
+plot(graph_from_adjacency_matrix(another_matrix, mode="undirected", weighted = TRUE))
+
+#' Plot A Graph Representing Gene Expression Relationships Between Clusters
+#'
+#' Plot a graph representing the gene expression relationships between clusters. The edge thickness depends
+#' on how many genes the clusters share between each other. The more of the same genes they express, the thicker
+#' stronger their relationship is.
+#'
+#' @param gene_comparison_matrix A matrix object of cluster_id by cluster_id cells, with each
+#' matrix cell (x,y) containing the vector genes expressed by both clusters x and y.
+#'
+#' @return Returns a plot of nodes and edges, where node (number represents cluster id) represents a cluster
+#' and an edge between nodes represent the genes shared by those clusters.
+#'
+#' @export
+draw_cluster_gene_relations <- function(gene_comparison_matrix) {
+
+  another_matrix <- cbind(gene_comparison_matrix)
+  first_cluster <- head(row.names(gene_comparison_matrix), 1)
+  last_cluster <- tail(row.names(gene_comparison_matrix), 1)
+  for (cluster_x in first_cluster:last_cluster) {
+    for (cluster_y in first_cluster:last_cluster) {
+      if (length(another_matrix[as.character(cluster_x), as.character(cluster_y)][[1]]) == 1 &&
+          is.na(another_matrix[as.character(cluster_x), as.character(cluster_y)][[1]])) {
+        another_matrix[as.character(cluster_x), as.character(cluster_y)][[1]] <- 0
+      } else {
+        another_matrix[as.character(cluster_x), as.character(cluster_y)][[1]] <-
+          length(another_matrix[as.character(cluster_x), as.character(cluster_y)][[1]])
+      }
+    }
+  }
+
+  graph <- graph_from_adjacency_matrix(another_matrix, mode="undirected", weighted = TRUE)
+  return(plot(g, edge.width = 5 * (E(g)$weight / max(E(g)$weight)) ** 2))
+
 }
