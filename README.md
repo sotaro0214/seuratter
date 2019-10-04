@@ -1,8 +1,10 @@
 
-# seuratter
+# seuratter Overview
 
 <!-- badges: start -->
 <!-- badges: end -->
+
+![](./inst/extdata/SILVA_A_A1.png) 
 
 The goal of seuratter is to ...
 
