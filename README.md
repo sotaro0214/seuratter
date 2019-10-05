@@ -21,7 +21,7 @@ library("seuratter")
 
 An overview of the package is illustrated in the image below.
 
-![](./inst/extdata/SILVA_A_A1.png) 
+![overview](./inst/extdata/HIRAI_S_A1.png)
 
 ## Contributions
 

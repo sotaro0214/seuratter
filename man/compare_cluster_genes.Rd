@@ -18,3 +18,7 @@ A function that compares and compiles all the genes identified by extract_genes_
 this by determining the gene expressions that overlap between clusters and mapping that information into
 the matrix.
 }
+\examples{
+compare_cluster_genes(PBMC)
+
+}

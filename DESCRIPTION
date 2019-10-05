@@ -2,7 +2,7 @@ Package: seuratter
 Type: Package
 Title: Assists The Current Single Cell RNA Sequencing Analysis Workflow
 Version: 0.1.0
-Author@R: person("S", "Hirai", email = "sotao0214@gmail.com", role = c("aut", "cre"))
+Author: person("S", "Hirai", email = "sotao0214@gmail.com", role = c("aut", "cre"))
 Maintainer: S Hirai <sotaro0214@gmail.com>
 Description: Assists the current single cell RNA sequencing analysis workflow by automating determination of dimensionality and 
     generating a graphical output to portray the relationships between the clusters in detail.
@@ -13,7 +13,9 @@ LazyData: true
 Imports: 
     igraph,
     Seurat,
-    dplyr
+    dplyr,
+    utils,
+    graphics
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Suggests: 

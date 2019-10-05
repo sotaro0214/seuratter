@@ -25,3 +25,8 @@ percentage of cells (recommend 0.25 by Seurat author) in the cluster and does no
 expression among the clusters. In other words, function does not focus on cluster specific genes but
 also involves genes that are generally expressed (Seurat focuses on cluster specific genes).
 }
+\examples{
+library(Seurat)
+extract_genes_epressed(PBMC, 1, 0.25)
+
+}

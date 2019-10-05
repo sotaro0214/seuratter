@@ -11,11 +11,19 @@ draw_cluster_gene_relations(gene_comparison_matrix)
 matrix cell (x,y) containing the vector of genes expressed by both clusters x and y.}
 }
 \value{
-Returns a plot of nodes and edges, where node (number represents cluster id) represents a cluster
+Returns a graph of nodes and edges, where node (number represents cluster id) represents a cluster
 and an edge between nodes represent the genes shared by those clusters.
 }
 \description{
 Plot a graph representing the gene expression relationships between clusters. The edge thickness depends
 on how many genes the clusters share between each other. The more of the same genes they express, the thicker
 stronger their relationship is.
+}
+\examples{
+library(igraph)
+library(utils)
+library(graphics)
+gene_comparison_matrix <- compare_cluster_genes(PBMC)
+draw_cluster_gene_relations(gene_comparison_matrix)
+
 }

@@ -10,7 +10,7 @@ the few depicted below are relevant to this pacakge):
 \item{features}{The number of genes that were expressed by the cells.}
 \item{samples}{The number of cells involved in this experiment.}
 \item{seurat_clusters}{Identification of clusters for each cell.}
-\item{Seurat_Object[\link{"RNA}]}{Includes the raw and lognormalized gene expression matrices.}
+\item{RNA}{Includes the raw and lognormalized gene expression matrices.}
 }}
 \source{
 10X Genomics, California, USA
