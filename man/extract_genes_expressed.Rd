@@ -27,6 +27,6 @@ also involves genes that are generally expressed (Seurat focuses on cluster spec
 }
 \examples{
 library(Seurat)
-extract_genes_epressed(PBMC, 1, 0.25)
+extract_genes_expressed(PBMC, 1, 0.25)
 
 }
