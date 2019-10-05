@@ -10,8 +10,11 @@ compare_cluster_genes(seurat_object)
 \item{seurat_object}{A Seurat object that has undergone the entire workflow, involving UMAP.}
 }
 \value{
-Returns a matrix of number of clusters by number of clusters, with each matrix cell (x,y) containing the vector genes expressed by both clusters x and y.
+Returns a matrix of number of clusters by number of clusters, with each matrix cell (x,y)
+containing the vector of genes expressed by both clusters x and y.
 }
 \description{
-A function that compares and compiles all the genes identified by extract_genes_expressed into one matrix
+A function that compares and compiles all the genes identified by extract_genes_expressed() into one matrix. Does
+this by determining the gene expressions that overlap between clusters and mapping that information into
+the matrix.
 }

@@ -7,8 +7,8 @@
 draw_cluster_gene_relations(gene_comparison_matrix)
 }
 \arguments{
-\item{gene_comparison_matrix}{A matrix object of cluster_id by cluster_id cells, with each
-matrix cell (x,y) containing the vector genes expressed by both clusters x and y.}
+\item{gene_comparison_matrix}{A matrix object of number of cluster by number of clusters cells, with each
+matrix cell (x,y) containing the vector of genes expressed by both clusters x and y.}
 }
 \value{
 Returns a plot of nodes and edges, where node (number represents cluster id) represents a cluster

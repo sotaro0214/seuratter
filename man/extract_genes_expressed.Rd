@@ -11,14 +11,17 @@ extract_genes_expressed(seurat_object, cluster_num, min_percent)
 
 \item{cluster_num}{An integer representing the cluster.}
 
-\item{min_percent}{A float representing the percentage of cells that have to express the gene to be included in the result.}
+\item{min_percent}{A float representing the percentage of cells that have to express the gene to be
+included in the result.}
 }
 \value{
-Returns a vector of gene names that are expressed by the cluster identified by cluster_num
+Returns a vector of gene names that are expressed by the cluster identified by cluster_num in more
+than min_percent of the cells in the cluser.
 }
 \description{
-A function that utilizes a Seurat function to identify and extract gene expression profiles (both positive and negative expressions) of
-a cluster. Involves identifying all genes expressed by more than a certain percentage of cells (recommend 0.25) in the cluster and
-does not take into account the uniquesness of expression among other clusters. In other words, does not focus on cluster specific genes
-but also involves genes that are generally expressed.
+A function that utilizes a Seurat function to identify and extract gene expression profiles (both positive
+and negative expressions) of a cluster. Involves identifying all genes expressed by more than a certain
+percentage of cells (recommend 0.25 by Seurat author) in the cluster and does not take into account the uniquesness of
+expression among the clusters. In other words, function does not focus on cluster specific genes but
+also involves genes that are generally expressed (Seurat focuses on cluster specific genes).
 }
