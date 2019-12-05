@@ -1,0 +1,12 @@
+citHeader("To cite seuratter in publications use:")
+
+citEntry(
+  entry    = "unpublished",
+  title    = "seuratter",
+  author   = "Sotaro Hirai",
+  note     = "unpublished",
+  Year     = "2019",
+  textVersion = paste(
+
+  )
+)

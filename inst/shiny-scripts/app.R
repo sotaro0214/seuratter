@@ -1,6 +1,7 @@
 library(shiny)
 
 ui <- fluidPage(
+  # Create different tabs for each graphical output
   tabsetPanel(
     tabPanel(title = "Determine Dimensionality",
              sliderInput(inputId = "num",
@@ -29,6 +30,7 @@ server <- function(input, output) {
     draw_cluster_gene_relations(gene_comparison_matrix)
   }))
 
+  # Allow user to reorganize the graph if difficult to observe
   observeEvent(input$click, {
     output$clusters_graph <- renderPlot(({
       draw_cluster_gene_relations(gene_comparison_matrix)

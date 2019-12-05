@@ -3,7 +3,6 @@
 export(compare_cluster_genes)
 export(determine_dimensionality)
 export(draw_cluster_gene_relations)
-export(extract_genes_expressed)
 export(plot_cluster_relations)
 export(run_seuratter)
 export(run_shiny_seuratter)

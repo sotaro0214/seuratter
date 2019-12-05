@@ -22,7 +22,6 @@ relative to each other, the cluster pair with the most genes shared will be indi
 library(igraph)
 library(utils)
 library(graphics)
-gene_comparison_matrix <- compare_cluster_genes(PBMC)
-draw_cluster_gene_relations(gene_comparison_matrix)
-
+graph <- draw_cluster_gene_relations(gene_comparison_matrix)
+plot_cluster_relations(graph)
 }

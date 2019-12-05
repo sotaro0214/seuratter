@@ -6,7 +6,6 @@ output:
   rmarkdown::html_vignette:
     toc: true
     number_sections: false
-    css: "vignette.css"
 vignette: >
   %\VignetteIndexEntry{Introduction to seuratter}
   %\VignetteEngine{knitr::rmarkdown}
@@ -28,6 +27,7 @@ knit_hooks$set(par = function(before, options, envir)
        par(family = "sans", mar=c(4.1,4.1,1.1,1.1), mgp=c(3,1,0), tcl=-0.5)
 })
 set.seed(1) # for exact reproducibility
+library(seuratter)
 ```
 
 # Introduction
@@ -36,10 +36,6 @@ data through generation of a graph. The current workflow provides information on
 
 This document gives a quick tour of **seuratter** (version `r packageVersion("mclust")`) functionalities. It was written in R Markdown, using the [knitr](https://cran.r-project.org/package=knitr) package for production. 
 See `help(package="seuratter")` for further details and references provided by `citation("seuratter")`.
-
-```{r setup}
-library(seuratter)
-```
 
 # Data
 The data object used for this package is a Seurat object which can be easily generated using the package, Seurat.

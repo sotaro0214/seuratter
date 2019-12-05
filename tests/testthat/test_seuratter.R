@@ -13,15 +13,6 @@ test_that("Proper dimensionality is returned by determine_dimensionality", {
   expect_gt(determine_dimensionality(plot$data), head(plot$data$dims, 1))
 })
 
-test_that("Smaller/Larger min_percent should yield same or more/less(respectively) genes in extract_genes_expressed()", {
-  expect_gte(length(gene_expression_data), length(extract_genes_expressed(PBMC, 1, 0.5)))
-  expect_lte(length(gene_expression_data), length(extract_genes_expressed(PBMC, 1, 0.1)))
-})
-
-
-test_that("Different cluster_num should yield different results in extract_genes_expressed()", {
-  expect_false(isTRUE(all.equal(extract_genes_expressed(PBMC, 1, 0.25), extract_genes_expressed(PBMC, 2, 0.25))))
-})
 
 test_that("Values in cells at (x, x) should contain NA values in compare_cluster_genes()", {
   for (i in 1:length(rownames(matrix))) {

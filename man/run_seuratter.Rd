@@ -10,8 +10,8 @@ run_seuratter(seurat_object)
 \item{seurat_object}{A Seurat object that has undergone the entire workflow, involving UMAP.}
 }
 \value{
-Returns a graph of nodes and edges, where node (number represents cluster id) represents a cluster
-and an edge between nodes represent the genes shared by those clusters.
+Returns a vector containing all the graphical outputs generated
+by seuratter (except determine_dimensionality)
 }
 \description{
 Work as a controller integrating extract_genes_expressed, compare_cluster_genes, and

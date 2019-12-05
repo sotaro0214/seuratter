@@ -39,41 +39,11 @@ determine_dimensionality <- function(plot_data, cutoff) {
   plot_data$color[plot_data$dims < dimension] <- "green"
   plot_data$color[dimension] <- "red"
 
-  plot(plot_data$dims, plot_data$stdev, col = plot_data$color, pch = 19)
+  plot(plot_data$dims, plot_data$stdev, col = plot_data$color, pch = 19,
+       main = "Elbow plot with determined dimensionality",
+       sub = "Red dot with an arrow indicates the dimensionality and the green points are all data included.")
   arrows(dimension, plot_data$stdev[dimension] + 1, dimension, plot_data$stdev[dimension] + 0.5)
   return(dimension)
-}
-
-
-
-#' Extracts Genes Expressed By A Cluster.
-#'
-#' A function that utilizes a Seurat function to identify and extract gene expression profiles (both positive
-#' and negative expressions) of a cluster. Involves identifying all genes expressed by more than a certain
-#' percentage of cells (recommend 0.25 by Seurat author) in the cluster and does not take into account the uniquesness of
-#' expression among the clusters. In other words, function does not focus on cluster specific genes but
-#' also involves genes that are generally expressed (Seurat focuses on cluster specific genes).
-#'
-#' @param seurat_object A Seurat object that has undergone the entire workflow, involving UMAP.
-#' @param cluster_num An integer representing the cluster.
-#' @param min_percent A float representing the percentage of cells that have to express the gene to be
-#' included in the result.
-#'
-#' @return Returns a vector of gene names that are expressed by the cluster identified by cluster_num in more
-#' than min_percent of the cells in the cluser.
-#'
-#' @examples
-#' library(Seurat)
-#' extract_genes_expressed(PBMC, 1, 0.25)
-#'
-#' @import Seurat
-#'
-#' @export
-extract_genes_expressed <- function(seurat_object, cluster_num, min_percent) {
-
-  cluster_markers <- Seurat::FindMarkers(seurat_object, ident.1 = cluster_num, min.pct = min_percent)
-  return(rownames(cluster_markers)) # We only want to return the names of the genes (ie. rownames).
-
 }
 
 
@@ -186,20 +156,21 @@ draw_cluster_gene_relations <- function(gene_comparison_matrix) {
   # Convert weight such that it is weight/max(weight) so that we can use it to convert into rgb color.
   E(graph)$weight <- E(graph)$weight / max(E(graph)$weight)
 
+  # Set the graph edge colors in a gradient to mimick a heatmap.
   E(graph)$color <- apply(color_gradient(E(graph)$weight), 1, function(x) rgb(x[1]/255,x[2]/255,x[3]/255))
   # Adapted from:
   # ahmohamed. (February 14 2015). How to scale edge colors in igraph?. *Stackoverflow*.
   # Retrieved from: https://stackoverflow.com/questions/28366329/how-to-scale-edge-colors-in-igraph
 
-
+  # Set this layout to have a good balance between the graph and legend.
   layout(matrix(1:2,ncol=2), width = c(2,1),height = c(1,1))
 
-  # This edge.width setting emphasizes the differences the most.
-  plot.igraph(graph, main = 'Graph representing gene expression
+  igraph::plot.igraph(graph, main = 'Graph representing gene expression
               relationship between clusters')
 
 
-
+  # Set these palettes for plotting the legend, additionally. This is done separately from the
+  # igraph plot.
   color_palette <- colorRampPalette(c('red', 'yellow', 'cyan', 'blue'))
   legend <- as.raster(matrix(color_palette(20), ncol = 1))
   plot(c(0,5),c(0,1),type = 'n', axes = F,xlab = '', ylab = '', main = 'Commonness of genes',)
@@ -209,7 +180,7 @@ draw_cluster_gene_relations <- function(gene_comparison_matrix) {
   # mnel. (November 13 2012). Gradient legend in base. Stackoverflow.
   # Retrieved from: https://stackoverflow.com/questions/13355176/gradient-legend-in-base
 
-  # Reset layout
+  # Reset layout because otherwise the subsequent plots are affected too.
   par(mfrow=c(1,1))
 
   return(graph)
@@ -231,9 +202,8 @@ draw_cluster_gene_relations <- function(gene_comparison_matrix) {
 #' library(igraph)
 #' library(utils)
 #' library(graphics)
-#' gene_comparison_matrix <- compare_cluster_genes(PBMC)
-#' draw_cluster_gene_relations(gene_comparison_matrix)
-#'
+#' graph <- draw_cluster_gene_relations(gene_comparison_matrix)
+#' plot_cluster_relations(graph)
 #' @import igraph utils graphics
 #'
 #' @export
@@ -242,6 +212,8 @@ plot_cluster_relations <- function(gene_expression_graph) {
   j <- 2
   x_labels <- c()
   vertices <- V(gene_expression_graph)$name
+
+  # This loop is working to extract all possible cluster pairs to use it for the x-asix label.
   while (i <= length(vertices)) {
     while (j <= length(vertices)) {
       x_labels <- c(x_labels, paste(vertices[i], vertices[j], sep = ','))
@@ -267,8 +239,8 @@ plot_cluster_relations <- function(gene_expression_graph) {
 #'
 #' @param seurat_object A Seurat object that has undergone the entire workflow, involving UMAP.
 #'
-#' @return Returns a graph of nodes and edges, where node (number represents cluster id) represents a cluster
-#' and an edge between nodes represent the genes shared by those clusters.
+#' @return Returns a vector containing all the graphical outputs generated
+#' by seuratter (except determine_dimensionality)
 #'
 #' @examples
 #' library(igraph)
