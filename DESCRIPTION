@@ -15,8 +15,12 @@ Imports:
     Seurat,
     dplyr,
     utils,
-    graphics
+    graphics,
+    shiny
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

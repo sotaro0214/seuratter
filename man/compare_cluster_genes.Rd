@@ -4,10 +4,13 @@
 \alias{compare_cluster_genes}
 \title{Compares Genes Expressed In Each Cluster.}
 \usage{
-compare_cluster_genes(seurat_object)
+compare_cluster_genes(seurat_object, min_percent)
 }
 \arguments{
 \item{seurat_object}{A Seurat object that has undergone the entire workflow, involving UMAP.}
+
+\item{min_percent}{A float representing the percentage of cells that have to express the gene to be
+included in the result.}
 }
 \value{
 Returns a matrix of number of clusters by number of clusters, with each matrix cell (x,y)
