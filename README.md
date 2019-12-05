@@ -33,7 +33,9 @@ The package consists of two main features:
 
 Check the vignette for more information.
 
+``` {r}
 browseVignettes("seuratter")
+```
 
 ![overview](./inst/extdata/HIRAI_S_A1.png)
 
